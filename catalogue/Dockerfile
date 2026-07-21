@@ -1,6 +1,6 @@
 FROM node:20
 
-# creates the /app and set the directory to /app
+# creates the /app and set the directory to /app , CRETAE /app and move into it 
 WORKDIR /app
 COPY package.json .
 COPY *.js .
