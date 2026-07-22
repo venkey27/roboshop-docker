@@ -59,6 +59,16 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: "RoboShop@1"
 
+  shipping:
+    build: ./shipping
+    image: venkey57/shipping:v1
+    container_name: shipping
+    environment:
+      CART_ENDPOINT: "cart:8080"
+      DB_HOST: "mysql"
+    depends_on:
+    - cart
+    - mysql
 
 networks:
   default: # this means all the services in this file use this network
