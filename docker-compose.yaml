@@ -4,7 +4,8 @@ services:
     build: ./mongodb
     image: venkey57/mongodb:v1 #docker build -t joindevops/mongodb:v1 # [registry/]repository/image-name:tag
     container_name: mongodb    # docker run -d --network roboshop joindevops/mongodb:v1
-
+    volumes:
+    - mongodb:/data/db  # mongodb stores data in /data/db directory
   catalogue:
     build: ./catalogue
     image: venkey57/catalogue:v1
@@ -40,6 +41,8 @@ services:
   redis: 
     image: redis:7  # redis i not pushing to venkey57 because its is not a customize. just using redis:7 form docker hub that's it
     container_name: redis            # docker run -d --name redis --network roboshop redis:7
+    volumes:
+    - redis:/data
 
   cart:
     build: ./cart
@@ -60,6 +63,8 @@ services:
     command: --mysql-native-password=ON --innodb-lock_wait_timeout=120
     environment:
       MYSQL_ROOT_PASSWORD: "RoboShop@1"
+    volumes:
+    - mysql:/var/lib/mysql
 
   shipping:
     build: ./shipping
@@ -78,6 +83,8 @@ services:
     environment:
       RABBITMQ_DEFAULT_USER: roboshop
       RABBITMQ_DEFAULT_PASS: roboshop123
+    volumes:
+    - rabbitmq:/var/lib/rabbitmq
 
   payment:
     build: ./payment
@@ -102,3 +109,8 @@ networks:
     driver: bridge
     external: false # if true it should be created manually, if false docker creates this network
   
+volumes:
+  mongodb:                                      # docker volume create mongodb
+  redis:                                        # docker volume create redis
+  mysql:                                        # docker volume create mysql
+  rabbitmq:                                     # docker volume create rabbit
