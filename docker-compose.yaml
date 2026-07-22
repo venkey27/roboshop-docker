@@ -51,6 +51,14 @@ services:
     - redis
     - catalogue
 
+  mysql:
+    build: ./mysql
+    image: venkey57/mysql:v1
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: "RoboShop@1"
+
+
 networks:
   default: # this means all the services in this file use this network
     name: roboshop
