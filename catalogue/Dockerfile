@@ -17,7 +17,8 @@ ENV MONGO="true" \
 # vulnerability (like a Remote Code Execution in your code or dependencies), they gain root privileges inside the container. In some 
 # container escape scenarios, this can allow an attacker to gain root control over the host server itself.
 # addgroup -S appgroup && adduser -S -G appgroup  appuser 
-RUN addgroup -S roboshop && adduser -S -G roboshop  roboshop 
+RUN addgroup -S roboshop && adduser -S -G roboshop  roboshop && \
+    chown -R roboshop:roboshop /app
 
 # changing the file ownership of the /app directory from root to roboshop.
 # Docker defaults to running all commands as the root user, those copied files belong to root. The roboshop user does not own them yet.
@@ -25,7 +26,8 @@ RUN addgroup -S roboshop && adduser -S -G roboshop  roboshop
 # files, create temporary files, or update anything inside /app, it will crash with a Permission Denied (EACCES) error.
 
 # Because only root has the power to change ownership of files, root runs this command to give full ownership of /app to roboshop
-RUN chown -R roboshop:roboshop /app
+# RUN chown -R roboshop:roboshop /app
+
 COPY --from=builder /app /app
 
 #You switch from the root user to the roboshop user for all future commands and container runtime.
