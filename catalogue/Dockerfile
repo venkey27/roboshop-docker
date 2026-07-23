@@ -8,7 +8,6 @@ RUN npm install
 
 FROM node:20.20.2-alpine3.22
 WORKDIR /app
-COPY --from=builder /app /app
 EXPOSE 8080
 ENV MONGO="true" \
     MONGO_URL="mongodb://mongodb:27017/catalogue"
@@ -27,6 +26,7 @@ RUN addgroup -S roboshop && adduser -S -G roboshop  roboshop
 
 # Because only root has the power to change ownership of files, root runs this command to give full ownership of /app to roboshop
 RUN chown -R roboshop:roboshop /app
+COPY --from=builder /app /app
 
 #You switch from the root user to the roboshop user for all future commands and container runtime.
 USER roboshop
