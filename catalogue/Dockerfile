@@ -12,6 +12,14 @@ COPY --from=builder /app /app
 EXPOSE 8080
 ENV MONGO="true" \
     MONGO_URL="mongodb://mongodb:27017/catalogue"
+
+# Create a system group and a system user without a password
+# addgroup -S appgroup && adduser -S -G appgroup  appuser 
+RUN addgroup -S roboshop && adduser -S -G roboshop  roboshop 
+
+# giving ownership for /app is roboshop
+RUN chown -R roboshop:roboshop /app
+USER roboshop
 CMD ["node", "server.js"]
 
 # FROM node:20
